@@ -1,0 +1,26 @@
+- name: create bin folder 
+  ansible.builtin.file:
+    path: "{{ build_directory }}/.local/bin"
+    state: directory
+    
+- name: download latest lua-lsp
+  ansible.builtin.get_url:
+    url: "{{ lookup('url', 'https://api.github.com/repos/LuaLS/lua-language-server/releases/latest', split_lines=false) | regex_search('browser_download_url.*(https://(.*?).tar.gz)', '\\1') | first }}"
+    dest: '{{ build_directory }}/.local/bin/lua-lsp.tar.gz'
+            
+- name: create lua-lsp folder 
+  ansible.builtin.file:
+    path: "{{ build_directory }}/.local/bin/lua-lsp"
+    state: directory
+
+- name: extract lua-lsp package
+  ansible.builtin.unarchive:
+    src: '{{ build_directory }}/.local/bin/lua-lsp.tar.gz'
+    dest: '{{ build_directory }}/.local/bin/lua-lsp'
+    remote_src: yes
+
+- name: remove tar.gz file
+  ansible.builtin.file:
+    path: '{{ build_directory }}/.local/bin/lua-lsp.tar.gz'
+        state: absent
+

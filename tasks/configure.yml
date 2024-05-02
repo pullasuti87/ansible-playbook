@@ -1,0 +1,7 @@
+- name: gnome center windows
+  command: gsettings set org.gnome.mutter center-new-windows true
+
+- name: remove .bashrc file
+  file:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    state: absent

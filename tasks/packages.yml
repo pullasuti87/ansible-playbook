@@ -1,0 +1,19 @@
+- name: install packages
+  apt:
+    name:
+      -code
+      - curl
+      - evolution
+      - evolution-ews
+      - fzf
+      - git
+      - gimp
+      - google-chrome-stable
+      - neovim
+      - nodejs
+      - npm
+      - rhythmbox
+      - stow
+      - vlc
+    
+
