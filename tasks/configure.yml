@@ -1,7 +1,38 @@
-- name: gnome center windows
+- name: gnome center-new-windows setting
   command: gsettings set org.gnome.mutter center-new-windows true
+   
+- name: if ssh exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.ssh"
+  register: ssh
+
+- name: add ssh key
+  command: ssh-add ~/.ssh/id_rsa
+  when: ssh.stat.exists
 
 - name: remove .bashrc file
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.bashrc"
     state: absent
+    
+- name: if dotfiles exists
+  stat:
+    path: "{{ ansible_env.HOME }}/dotfiles"
+  register: dotfiles
+
+- name: clone dotfiles if not exist
+  git:
+    repo: "https://github.com/pullasuti87/dotfiles.git"
+    dest: "{{ ansible_env.HOME }}/dotfiles"
+  when: not dotfiles.stat.exists
+ 
+#- name: remove readme 
+#  file:
+#    path: "{{ ansible_env.HOME }}/dotfiles/README.md"
+#    state: absent
+#  when: not dotfiles.stat.exists
+    
+- name: link dotfiles 
+  shell:
+    cd {{ ansible_env.HOME }}/dotfiles
+    stow */

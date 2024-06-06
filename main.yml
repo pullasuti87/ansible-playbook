@@ -1,16 +1,19 @@
-- name: Install packages and configure settings
+# use "ansible-playbook main.yml --ask-become-pass"
+- name: install packages and configure settings
   hosts: localhost
-  become: yes
-  pre_tasks:
-    - name: update cache
-      apt: 
-        update_cahce: yes
-        
-  vars:
-    build_directory: "{{ ansible_env.HOME }}"
-      
+            
   tasks:
-    - include: tasks/packages.yml
-    - include: tasks/configure.yml
-    - inlcude: tasks/lua-lsp.yml
+    - name: update
+      apt:
+        update_cache: yes
+      become: true
+        
+    - name: refresh snap 
+      command: snap refresh
+      become: true 
       
+    - include_tasks: tasks/packages.yml
+    - include_tasks: tasks/configure.yml
+    - include_tasks: tasks/lua-lsp.yml
+      
+

@@ -1,19 +1,54 @@
 - name: install packages
   apt:
     name:
-      -code
       - curl
       - evolution
       - evolution-ews
       - fzf
       - git
       - gimp
-      - google-chrome-stable
-      - neovim
       - nodejs
       - npm
       - rhythmbox
       - stow
       - vlc
+  become: true
+  
+  - name: install neovim snap 
+  snap:
+    name: nvim
+    classic: true
+  become: true
+      
+- name: download vscode 
+  get_url:
+    url: "https://code.visualstudio.com/sha/download?#build=stable&os=linux-deb-x64"
+    dest: "{{ ansible_env.HOME }}/Downloads/vscode.deb"
+   
+- name: install .deb package
+  apt:
+    deb: "{{ ansible_env.HOME }}/Downloads/vscode.deb"
+  become: true
+
+#- name: remove vscode.deb
+#      file:
+#        path: "{{ ansible_env.HOME }}/Downloads/vscode.deb"
+#        state: absent
     
+- name: download chrome 
+  get_url:
+    url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+    dest: "{{ ansible_env.HOME }}/Downloads/chrome.deb"
+   
+- name: install .deb package
+  apt:
+    deb: "{{ ansible_env.HOME }}/Downloads/chrome.deb"
+  become: true
+
+#- name: remove chrome.deb
+#      file:
+#        path: "{{ ansible_env.HOME }}/Downloads/chrome.deb"
+#        state: absent
+    
+
 
