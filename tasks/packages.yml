@@ -31,7 +31,18 @@
 - name: install tree-sitter-cli (nvim-treesitter)
   npm:
     name: tree-sitter-cli
+    state: present  
+  become: yes  
+
+- name: install typescript-language-server, typescript 
+  npm:
+    name: "{{ item }}"
     global: yes
+    state: present
+  loop:
+    - typescript-language-server
+    - typescript
+  become: yes
 
 - name: install jsregexp (nvim-luasnip)
   community.general.luarocks:
