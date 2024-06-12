@@ -10,10 +10,14 @@
   command: ssh-add ~/.ssh/id_rsa
   when: ssh.stat.exists
 
-- name: remove .bashrc file
+- name: remove files
   ansible.builtin.file:
-    path: "{{ ansible_env.HOME }}/.bashrc"
+    path: "{{ ansible_env.HOME }}/{{ item }}"
     state: absent
+  loop:
+    - .bashrc
+    - .bash_aliases
+    - .vimrc
     
 - name: if dotfiles exists
   stat:
@@ -33,6 +37,6 @@
 #  when: not dotfiles.stat.exists
     
 - name: link dotfiles 
-  shell:
+  shell: |
     cd {{ ansible_env.HOME }}/dotfiles
     stow */

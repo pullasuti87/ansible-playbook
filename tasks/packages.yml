@@ -9,6 +9,7 @@
       - gimp
       - nodejs
       - npm
+      - obs-studio
       - rhythmbox
       - stow
       - vlc
