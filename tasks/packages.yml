@@ -28,18 +28,13 @@
     classic: true
   become: true
 
-- name: install tree-sitter-cli (nvim-treesitter)
-  npm:
-    name: tree-sitter-cli
-    state: present  
-  become: yes  
-
-- name: install typescript-language-server, typescript 
+- name: install tree-sitter-cli, typescript-language-server, typescript 
   npm:
     name: "{{ item }}"
     global: yes
     state: present
   loop:
+    - tree-sitter-cli
     - typescript-language-server
     - typescript
   become: yes
